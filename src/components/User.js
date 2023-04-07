@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, {PureComponent, useEffect,useState,Component} from 'react';
 // import {} from 'react';
 /*class components
 export default class User extends Component
@@ -51,7 +51,7 @@ function User()
         <h1>Hello World</h1>
     );
 }
-*/
+
 function User(props)
 {
   useEffect(()=>{
@@ -65,4 +65,45 @@ function User(props)
     </div>
   );
 }
+
+function User(props)
+{
+    return(
+        <div>
+            <span>
+            Name : {props.data.name} 
+            <br />
+            Email: {props.data.email}
+            <br />
+            Contact:{props.data.contact}
+            <br /><br /></span>
+        </div>
+    );
+}
+//Sending data from child to parent
+function User(props)
+{
+//    let data ="Gaurav Prajapati"
+      let data = {name:"Gaurav Prajapati",email:"prajapatigaurav@gmail.com"}
+    return(
+        <div>
+           <h1>User Component:</h1>
+           <button onClick={()=>props.alert(data)}>Click Here</button>
+        </div>
+    );
+}
+*/
+class User extends PureComponent{
+    render()
+    {
+        console.log("Child re redering ");
+        return(
+            <h1>I am Child User {this.props.data}</h1>
+        );
+    }
+
+}
+
+
+
 export default User;

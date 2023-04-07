@@ -1,15 +1,19 @@
-import {useEffect, useState} from 'react'
-import logo from './logo.svg';
-import React,{Component} from 'react'
-import './App.css';
-import  './style.css';
-import {Button,Alert} from 'react-bootstrap'
-import style from './custom.module.css'
-import User from './components/User'
-import Members from './components/Members'
-import Login from './components/Login'
-import Student from './components/Student'
-import Profile from './components/Profile' 
+import { createRef, useEffect, useMemo, useRef, useState } from "react";
+import logo from "./logo.svg";
+import React, { Component } from "react";
+import "./App.css";
+import "./style.css";
+import { PureComponent } from "react";
+import { Fragment } from "react";
+import { Button, Alert ,Table} from "react-bootstrap";
+import style from "./custom.module.css";
+import User from "./components/User";
+import Members from "./components/Members";
+import Login from "./components/Login";
+import Student from "./components/Student";
+import Profile from "./components/Profile";
+
+
 /*function App() {
   // let data= "Gaurav Prajapati"
   function myButton()
@@ -424,7 +428,7 @@ function App(){
     </div>
   );
 }
-*/
+
 function App(){
   return(
     <div className="App">
@@ -454,6 +458,372 @@ function App(){
           </Alert>
         ))
       }
+    </div>
+  );
+}
+
+//Table using Bootstrap
+function App() {
+  //list
+  // const student = ['Gaurav','Yatin','Manisha','Nirali'];
+  //Using objects
+  const student = [
+    { name: "Gaurav", email: "gaurav@gmail.com", contact: 748539 },
+    { name: "Nirali", email: "nirali@gmail.com", contact: 463463 },
+    { name: "Manisha", email: "manisha@gmail.com", contact: 634572 },
+    { name: "Yatin", email: "yatin@gmail.com", contact: 235435 },
+  ];
+  //map looping
+  // student.map((item)=>{
+  //   console.log(item);
+  // });
+  // for(let i = 0;i<student.length ; i++)
+  // {
+  //   console.log("I am ",student[i]);
+  // }
+  //Basically we can not use forloop or while loop
+  // inside the return function so we do not use it
+  return (
+    <div className="App">
+      <h1>Mapping function and forloop</h1>
+      <Table striped variant="dark">
+        <tbody>
+          <tr>
+            <td>Name</td>
+            <td>Email</td>
+            <td>Contact No</td>
+          </tr>
+          {student.map((data, i) => (
+             data.email === 'gaurav@gmail.com'?
+            <tr key={i}>
+              <td>{data.name}</td>
+              <td>{data.email}</td>
+              <td>{data.contact}</td>
+            </tr>:null
+           
+          )
+          )}
+        </tbody>
+        </Table>
+    </div>
+  );
+}
+
+//Nested Table using Bootstrap 
+function App()
+{
+  const users = [
+    { name: "Gaurav", email: "gaurav@gmail.com", address: [
+      {HN:"105",city:"Noida",country:"India"},
+      {HN:"204",city:"Mumbai",country:"India"},
+      {HN:"100",city:"Dehradun",country:"India"},
+      {HN:"225",city:"Ahmdabad",country:"India"},
+    ] },
+    { name: "Nirali", email: "nirali@gmail.com", address: [
+      {HN:"101",city:"Noida",country:"India"},
+      {HN:"294",city:"New york",country:"US"},
+      {HN:"310",city:"Dehradun",country:"India"},
+      {HN:"275",city:"Mumbai",country:"India"},
+    ] },
+    { name: "Manisha", email: "manisha@gmail.com", address:[
+      {HN:"109",city:"Noida",country:"India"},
+      {HN:"254",city:"UP",country:"India"},
+      {HN:"64",city:"Pune",country:"India"},
+      {HN:"245",city:"Mumbai",country:"India"},
+    ]},
+    { name: "Yatin", email: "yatin@gmail.com", address: [
+      {HN:"109",city:"Noida",country:"India"},
+      {HN:"254",city:"UP",country:"India"},
+      {HN:"64",city:"Pune",country:"India"},
+      {HN:"245",city:"Mumbai",country:"India"},
+    ] },
+  ];
+  return(
+    <div className="App">
+      <Table striped variant="dark">
+          <tbody>
+            <tr>
+            <td>SrNo.</td>
+              <td>Name</td>
+              <td>Email</td>
+              <td>Address</td>
+              
+            </tr>
+          
+          {
+            users.map((item,i)=>
+            <tr key={i}>
+              <td>{i+1}</td>
+              <td>{item.name}</td>
+              <td>{item.email}</td>
+              <td>
+                <Table striped variant="dark">
+                <tbody>{
+                item.address.map((data,j)=>
+                  <tr key={j}>
+                    <td>{data.HN}</td>
+                    <td>{data.city}</td>
+                    <td>{data.country}</td>
+                  </tr>
+                )}</tbody>
+                </Table>
+                </td>
+              </tr>
+            )
+          } 
+             </tbody>   
+      </Table>
+    </div>
+  );
+}
+
+function App() {
+  const user = [
+    { name: "Gaurav", email: "gaurav@gmail.com", contact: 748539 },
+    { name: "Nirali", email: "nirali@gmail.com", contact: 463463 },
+    { name: "Manisha", email: "manisha@gmail.com", contact: 634572 },
+    { name: "Yatin", email: "yatin@gmail.com", contact: 235435 },
+  ];
+  return (
+    <div className="App">
+      <h1>Reusing Components with List</h1>
+      {
+        user.map((item,i)=>
+       <User data={item}></User>
+        )
+      }
+    </div>
+  );
+}
+//React Fragements
+function App()
+{
+  return(
+    <Fragment>
+      <h1>React Fragements Demo</h1>
+      <h2>I am Ok </h2>
+    </Fragment>
+    //Also we can use it in <> </> in this way instead of writing fragment
+    //It is helpful while writing tables etc because in a 
+    //table data we can not use div so that we need to take help of Fragements there
+
+  );
+}
+
+//Sending data from child coponent to parent component
+
+function App()
+{
+  function parentAlert(data)
+  {
+    alert("I am back "+data.name);
+    console.log(data);
+  }
+  return (
+    <div className="App">
+      <h1>Lifting state up Demo</h1>
+      <User alert={parentAlert}></User>
+    </div>
+  );
+}
+
+//Pure Components are the components which first check the content with 
+//the previous content if changes made then only it render again otherwise don't
+
+class App extends PureComponent
+{
+  constructor()
+  {
+    super();
+    console.log("App Component Created ");
+    this.state={
+      count:1
+    }
+  }
+  render()
+  {
+    console.log("check re-rendering")
+    return(
+      <div className="App">
+          <h1>Pure components in React {this.state.count}</h1>
+          <User data={this.state.count}></User>
+          <button onClick={()=>this.setState({count:this.state.count+1.
+          
+          })}>Update</button>
+      </div>
+    );
+  }
+}
+
+//useMemo Demo
+function App()
+{
+  const [count,setCount] = useState(0);
+  const [item,setItem] = useState(10);
+
+  const multiCountMemo = useMemo(
+    function multiCount()
+  {
+    console.log("Function Called");
+    return count*5;
+  },[count]//the paramaters on which it need to check before runnning again
+  )
+  // function multiCount()
+  // {
+  //   //console.log("Function Called");
+  //   return count*5;
+  // }
+  return(
+    <div className="App">
+      <h1>useMemo Demo(Same function as Pure Component)</h1>
+      <h2>Count: {count}</h2>
+      <h2>Item: {item}</h2>
+      <h2>Value:  {multiCountMemo}</h2>
+     
+    <button onClick={()=>setCount(count+1)}> Update count</button>
+    <button onClick={()=>setItem(item+10)}> Update item</button>
+    </div>
+  );
+}
+
+//Acc to official docs. use as less as possible to Ref
+//Ref directly make changes in DOM of the webpage
+
+class App extends Component
+{
+  constructor()
+  {
+    super();
+    this.inputRef = createRef();
+  }
+  componentDidMount()
+  {
+    console.log(this.inputRef.current.value="Gaurav");
+    //directly inputRef will give the whole DOM of the page 
+  }
+  getVal()
+  {
+    console.log(this.inputRef);
+  }
+  render()
+  {
+    return(
+      <div className="App">
+        <h1>Use of Ref</h1>
+        <input type="text" ref={this.inputRef}/>
+        <button onClick={()=>this.getVal()}>Check Ref</button>
+      </div>
+    );
+  } 
+}
+
+function App()
+{
+  let inputRef = useRef(null)
+  function handleInput()
+  {
+    // console.log("Working");
+    // inputRef.current.value = "Gaurav";
+    // inputRef.current.focus();
+    // inputRef.current.style.color = "blue";
+    inputRef.current.style.display = "none"
+  }
+  return(
+    <div className="App">
+      <h1>useRef hook for Ref operation using function</h1>
+      <input type="text" ref = {inputRef} />
+      <button onClick={handleInput}>Handle Input</button>
+    </div>
+  );
+}
+
+
+function App()
+{
+  //Controlled component are the components which are handled using
+  //state in react js and which are handled by DOM are called as UnControlled component
+  let [val,setVal] = useState("First Name")
+  let [item,setItem] = useState("Last Name")
+  return(
+    <div className="App">
+      <h1>Controlled Component in Raect</h1>
+      <input type="text" value={val}  onChange={(e)=>setVal(e.target.value)}/>
+      <input type="text" value={item}  onChange={(e)=>setItem(e.target.value)}/>
+      <h3>Value : {val} , Item : {item}</h3>
+    </div>
+  );
+}
+
+function App()
+{
+  //Uncontrolled Components refers to the input fields or some components 
+  //which should not use state and that are handled by only useRef(Hook) or JavaScript 
+  let inputRef = useRef(null)
+  let inputRef2 = useRef(null)
+  function submitForm(e)
+  {
+    e.preventDefault();
+    console.log("input field 1 value : ",inputRef.current.value)
+    console.log("input field 1 value : ",inputRef2.current.value)
+    let input3 = document.getElementById("input3").value
+    console.log("Input field 3 value is : " , input3)
+  }
+  return(
+    <div className="App">
+      <h1>Uncontrolled Components</h1>
+      <form action="" onSubmit={submitForm}>
+      <br />
+      <input type="text" ref ={inputRef} />
+      <br /><br />
+      <input type="text" ref ={inputRef2}/>
+      <br /><br />
+      <input type="text" id="input3" />
+      <br /><br />
+      <button>Submit</button>
+      </form>
+    </div>
+  );
+}
+*/
+//HOC = High Order Component(The components which take input a component and itself 
+//return a component which is just a customized version of the same component)
+
+function App()
+{
+  return(
+    <div className="App">
+      <h1>High Order Component in React</h1>
+      <HOCRed cmp={Counter}/>
+      <HOCYellow cmp={Counter}/>
+      <HOCGreen cmp={Counter}/>
+    </div>
+  );
+}
+function HOCRed(props)
+{
+  return(
+    <h2 style={{backgroundColor:'red',width:100}}><props.cmp/>STOP</h2>
+  );
+}
+function HOCYellow(props)
+{
+  return(
+    <h2 style={{backgroundColor:'yellow',width:100}}><props.cmp/>BE READY</h2>
+  );
+}
+function HOCGreen(props)
+{
+  return(
+    <h2 style={{backgroundColor:'green',width:100}}><props.cmp/>GO</h2>
+  );
+}
+function Counter()
+{
+  const [count,setCount] = useState(0)
+  return(
+  <div>
+      <h3>{count}</h3>
+      <button onClick={()=>setCount(count+1)}>Update</button>
     </div>
   );
 }
