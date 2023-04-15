@@ -784,7 +784,7 @@ function App()
     </div>
   );
 }
-*/
+
 //HOC = High Order Component(The components which take input a component and itself 
 //return a component which is just a customized version of the same component)
 
@@ -827,4 +827,80 @@ function Counter()
     </div>
   );
 }
-export default App;
+
+//fetching api from server
+function App() {
+  const [users,setUser]=useState([])
+  useEffect(()=>{
+    //fetch returns a promise which we need to accept , to accept that we use .then method which gives result
+    fetch("https://dummyjson.com/todos").then((result)=>{
+      result.json().then((resp)=>{
+        // console.warn(resp)
+        setUser(resp)
+      })
+    })
+  },[])
+  console.warn(users)
+  return (
+    <div className="App">
+      <h1>Get API Call </h1>
+      <table border="1">
+       <tbody>
+       <tr>
+          <td>ID</td>
+          <td>Name</td>
+          <td>Email</td>
+          <td>Mobile</td>
+        </tr>
+        {
+          users.map((item,i)=>
+            <tr key={i}>
+            <td>{item.userId}</td>
+          <td>{item.todo}</td>
+          <td>{item.completed}</td>
+            <td>{item.userId}</td>
+          </tr>
+          )
+        }
+       </tbody>
+      </table>
+    </div>
+  );
+}
+*/
+function App() {
+  const [name,setName]=useState("");
+  const [email,setEmail]=useState("");
+  const [mobile,setMobile]=useState("");
+ function saveData()
+ {
+   let data={name,email,mobile}
+ // console.warn(data);
+   fetch("https://dummyjson.com/todos", {
+     method: "POST",
+     headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json',
+     },
+     body:JSON.stringify(data)
+   }).then((resp)=>{
+     // console.warn("resp",resp);;
+     resp.json().then((result)=>{
+       console.warn("result",result)
+     })
+   })
+ }
+   return (
+     <div className="App">
+       <h1>POST API Example </h1>  
+       <input type="text" name="name" value={name} onChange={(e)=>{setName(e.target.value)}}  /> <br /> <br />
+       <input type="text" name="email"  value={email} onChange={(e)=>{setEmail(e.target.value)}} /> <br /> <br />
+       <input type="text" name="mobile"  value={mobile} onChange={(e)=>{setMobile(e.target.value)}}/> <br /> <br />
+       <button type="button" onClick={saveData} >Save New User</button>
+     </div>
+   );
+ }
+ export default App;
+ 
+
+
